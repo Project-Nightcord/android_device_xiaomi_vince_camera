@@ -14856,20 +14856,6 @@ int32_t QCameraParameters::setDualCameraMode(const QCameraParameters& params)
 }
 
 /*===========================================================================
- * FUNCTION   : getDualCameraMode
- *
- * DESCRIPTION: get dual camera mode
- *
- * PARAMETERS :
- *
- * RETURN     : Dual camera mode status
- *==========================================================================*/
-bool QCameraParameters::getDualCameraMode()
-{
-    return m_bDualCameraMode;
-}
-
-/*===========================================================================
  * FUNCTION   : setLedCalibration
  *
  * DESCRIPTION: set Led Calibration Mode
