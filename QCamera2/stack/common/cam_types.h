@@ -32,7 +32,7 @@
 
 // System dependencies
 #include <stdint.h>
-#include <media/msmb_camera.h>
+#include <media/msmb_camera-legacy.h>
 
 #define CAM_MAX_NUM_BUFS_PER_STREAM 64
 #define MAX_METADATA_PRIVATE_PAYLOAD_SIZE_IN_BYTES 8096
@@ -82,7 +82,7 @@
 #define MAX_AF_STATS_DATA_SIZE  1000
 #define MAX_ASD_STATS_DATA_SIZE 1000
 
-#define MAX_CAPTURE_BATCH_NUM 32
+#define MAX_CAPTURE_BATCH_NUM 120
 
 #define TUNING_DATA_VERSION        6
 #define TUNING_SENSOR_DATA_MAX     0x10000 /*(need value from sensor team)*/
@@ -106,15 +106,15 @@
 #define GPS_PROCESSING_METHOD_SIZE 33
 #define EXIF_IMAGE_DESCRIPTION_SIZE 100
 
-#define MAX_INFLIGHT_REQUESTS  6
-#define MAX_INFLIGHT_BLOB      10
+#define MAX_INFLIGHT_REQUESTS  5
+#define MAX_INFLIGHT_BLOB      5
 #define MIN_INFLIGHT_REQUESTS  3
 #define MIN_INFLIGHT_60FPS_REQUESTS (6)
 #define MAX_INFLIGHT_REPROCESS_REQUESTS 1
 #define MAX_INFLIGHT_HFR_REQUESTS (48)
 #define MIN_INFLIGHT_HFR_REQUESTS (40)
 
-#define QCAMERA_DUMP_FRM_LOCATION "/data/vendor/qcam/"
+#define QCAMERA_DUMP_FRM_LOCATION "/data/misc/camera/"
 #define QCAMERA_MAX_FILEPATH_LENGTH 64
 
 #define LIKELY(x)       __builtin_expect((x), true)
@@ -1476,9 +1476,7 @@ typedef struct {
 typedef struct {
   cam_auto_scene_t      detected_scene;
   uint8_t               max_n_scenes;
-//  xiaomi added 48 custom auto scenes or some other field with total size of 576 bytes
-  cam_asd_scene_info_t  scene_info[S_MAX+48];
-//  volatile char         xiaomi_reserved1[576];
+  cam_asd_scene_info_t  scene_info[S_MAX];
 } cam_asd_decision_t;
 
 
@@ -2460,6 +2458,7 @@ typedef struct {
 #define CAM_QCOM_FEATURE_QUADRA_CFA     (((cam_feature_mask_t)1UL)<<33)
 #define CAM_QTI_FEATURE_PPEISCORE       (((cam_feature_mask_t)1UL)<<34)
 #define CAM_QCOM_FEATURE_METADATA_BYPASS (((cam_feature_mask_t)1UL)<<35)
+#define CAM_QTI_FEATURE_RTB              (((cam_feature_mask_t)1UL)<<36)
 #define CAM_QCOM_FEATURE_PP_SUPERSET    (CAM_QCOM_FEATURE_DENOISE2D|CAM_QCOM_FEATURE_CROP|\
                                          CAM_QCOM_FEATURE_ROTATION|CAM_QCOM_FEATURE_SHARPNESS|\
                                          CAM_QCOM_FEATURE_SCALE|CAM_QCOM_FEATURE_CAC|\
@@ -2819,6 +2818,7 @@ typedef struct {
     cam_area_t               af_roi;        /* AF roi info */
     /* Information for CPP reprocess */
     cam_dyn_img_data_t       dyn_mask;      /* Post processing dynamic feature mask */
+    int32_t                  frame_number;  /* Backend frame number*/
 } cam_reprocess_info_t;
 
 /***********************************
