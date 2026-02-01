@@ -2618,8 +2618,6 @@ int64_t QCamera3HardwareInterface::getMinFrameDuration(const camera3_capture_req
             hasJpegStream = true;
     }
 
-    if (hasRawStream)
-        mMinFrameDuration = MAX(mMinRawFrameDuration, mMinFrameDuration);
     if (hasJpegStream)
         mMinFrameDuration = MAX(mMinJpegFrameDuration, mMinFrameDuration);
     return mMinFrameDuration;
